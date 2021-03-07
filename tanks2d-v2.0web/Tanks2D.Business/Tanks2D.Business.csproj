@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Tanks2D.Core\Tanks2D.Core.csproj" />
+    <ProjectReference Include="..\Tanks2D.Model\Tanks2D.Model.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,60 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29806.167
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tanks2D", "Tanks2D\Tanks2D.csproj", "{ACBC8FAA-DDA7-47AB-9FCE-5F0523FFC2C1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tanks2D.Core", "Tanks2D.Core\Tanks2D.Core.csproj", "{C2539D0F-23A1-48DD-9517-1FA91A281415}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tanks2D.Model", "Tanks2D.Model\Tanks2D.Model.csproj", "{1598DCCE-72C7-44F5-9A45-90B80FDF838B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tanks2D.Data", "Tanks2D.Data\Tanks2D.Data.csproj", "{CD999E6F-5D47-4BCC-AEC9-A0F2212F6B43}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tanks2D.Business", "Tanks2D.Business\Tanks2D.Business.csproj", "{33A5648D-F95D-46D5-92D0-FF5C3005B8A6}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Data", "Data", "{F470D966-8E1E-4EEE-9591-846F016B65B5}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Business", "Business", "{426301B1-FC2E-489A-9DD7-36F792E54926}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Model", "Model", "{45FC7A90-39F2-476F-AF0A-8951DF370A68}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{ACBC8FAA-DDA7-47AB-9FCE-5F0523FFC2C1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ACBC8FAA-DDA7-47AB-9FCE-5F0523FFC2C1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ACBC8FAA-DDA7-47AB-9FCE-5F0523FFC2C1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ACBC8FAA-DDA7-47AB-9FCE-5F0523FFC2C1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C2539D0F-23A1-48DD-9517-1FA91A281415}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C2539D0F-23A1-48DD-9517-1FA91A281415}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C2539D0F-23A1-48DD-9517-1FA91A281415}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C2539D0F-23A1-48DD-9517-1FA91A281415}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1598DCCE-72C7-44F5-9A45-90B80FDF838B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1598DCCE-72C7-44F5-9A45-90B80FDF838B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1598DCCE-72C7-44F5-9A45-90B80FDF838B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1598DCCE-72C7-44F5-9A45-90B80FDF838B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CD999E6F-5D47-4BCC-AEC9-A0F2212F6B43}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CD999E6F-5D47-4BCC-AEC9-A0F2212F6B43}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CD999E6F-5D47-4BCC-AEC9-A0F2212F6B43}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CD999E6F-5D47-4BCC-AEC9-A0F2212F6B43}.Release|Any CPU.Build.0 = Release|Any CPU
+		{33A5648D-F95D-46D5-92D0-FF5C3005B8A6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{33A5648D-F95D-46D5-92D0-FF5C3005B8A6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{33A5648D-F95D-46D5-92D0-FF5C3005B8A6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{33A5648D-F95D-46D5-92D0-FF5C3005B8A6}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{1598DCCE-72C7-44F5-9A45-90B80FDF838B} = {45FC7A90-39F2-476F-AF0A-8951DF370A68}
+		{CD999E6F-5D47-4BCC-AEC9-A0F2212F6B43} = {F470D966-8E1E-4EEE-9591-846F016B65B5}
+		{33A5648D-F95D-46D5-92D0-FF5C3005B8A6} = {426301B1-FC2E-489A-9DD7-36F792E54926}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {4B7324D5-40BE-4AD8-BF84-05B90F96DACD}
+	EndGlobalSection
+EndGlobal
