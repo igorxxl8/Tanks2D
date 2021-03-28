@@ -7,15 +7,15 @@ interface ICommand {
 }
 
 class TankLauncher {
-    private ICommand turnRightCommand;
-    private ICommand turnLeftCommand;
-    private ICommand goForwardCommand;
-    private ICommand goBackCommand;
-    private ICommand stopTankCommand;
-    private ICommand goLeftCommand;
-    private ICommand goRightCommand;
-    private ICommand backLeftommand;
-    private ICommand backRightCommand;
+    private final ICommand turnRightCommand;
+    private final ICommand turnLeftCommand;
+    private final ICommand goForwardCommand;
+    private final ICommand goBackCommand;
+    private final ICommand stopTankCommand;
+    private final ICommand goLeftCommand;
+    private final ICommand goRightCommand;
+    private final ICommand backLeftCommand;
+    private final ICommand backRightCommand;
 
 
     TankLauncher(ICommand turnRight, ICommand goForward, ICommand turnLeft,
@@ -28,7 +28,7 @@ class TankLauncher {
         this.stopTankCommand = stopTank;
         this.goLeftCommand = goLeft;
         this.goRightCommand = goRight;
-        this.backLeftommand = backLeft;
+        this.backLeftCommand = backLeft;
         this.backRightCommand = backRight;
     }
 
@@ -61,7 +61,7 @@ class TankLauncher {
     }
 
     void backLeft(){
-        backLeftommand.execute();
+        backLeftCommand.execute();
     }
 
     void backRight(){
@@ -70,7 +70,7 @@ class TankLauncher {
 }
 
 class TurnRight implements ICommand{
-    private Tank tank;
+    private final Tank tank;
 
     TurnRight(Tank tank){
         this.tank = tank;
@@ -83,7 +83,7 @@ class TurnRight implements ICommand{
 }
 
 class TurnLeft implements ICommand{
-    private Tank tank;
+    private final Tank tank;
 
     TurnLeft(Tank tank){
         this.tank = tank;
@@ -96,7 +96,7 @@ class TurnLeft implements ICommand{
 }
 
 class GoBack implements ICommand{
-    private Tank tank;
+    private final Tank tank;
 
     GoBack(Tank tank){
         this.tank = tank;
@@ -109,7 +109,7 @@ class GoBack implements ICommand{
 }
 
 class StopTank implements ICommand{
-    private Tank tank;
+    private final Tank tank;
 
     StopTank(Tank tank){
         this.tank = tank;
@@ -122,7 +122,7 @@ class StopTank implements ICommand{
 }
 
 class GoForward implements ICommand{
-    private Tank tank;
+    private final Tank tank;
 
     GoForward(Tank tank){
         this.tank = tank;
@@ -135,7 +135,7 @@ class GoForward implements ICommand{
 }
 
 class GoLeft implements ICommand{
-    private Tank tank;
+    private final Tank tank;
 
     GoLeft(Tank tank){
         this.tank = tank;
@@ -148,7 +148,7 @@ class GoLeft implements ICommand{
 }
 
 class GoRight implements ICommand{
-    private Tank tank;
+    private final Tank tank;
 
     GoRight(Tank tank){
         this.tank = tank;
@@ -161,7 +161,7 @@ class GoRight implements ICommand{
 }
 
 class BackLeft implements ICommand{
-    private Tank tank;
+    private final Tank tank;
 
     BackLeft(Tank tank){
         this.tank = tank;
@@ -174,7 +174,7 @@ class BackLeft implements ICommand{
 }
 
 class BackRight implements ICommand{
-    private Tank tank;
+    private final Tank tank;
 
     BackRight(Tank tank){
         this.tank = tank;

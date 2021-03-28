@@ -1,8 +1,8 @@
 package Logic;
 
-import Engine.ImageManager;
+import Resources.ImageManager;
 import Vehicles.Tank;
-import javafx.util.Pair;
+import Core.Pair;
 
 import java.awt.*;
 import java.io.Serializable;

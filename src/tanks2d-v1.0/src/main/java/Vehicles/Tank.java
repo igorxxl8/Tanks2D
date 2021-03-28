@@ -16,7 +16,7 @@ public class Tank extends MapObject implements IMoveable {
     double angle = 0;
     double speedBack;
     double speedForward;
-    double body_rotation;
+    double bodyRotation;
 
     private boolean toBack;
     private boolean canMove;
@@ -71,9 +71,9 @@ public class Tank extends MapObject implements IMoveable {
             setX(getX() + speedForward * time * Math.cos(Math.toRadians(angle)));
             setY(getY() + speedForward * time * Math.sin(Math.toRadians(angle)));
         } else if (rotateLeft)
-            angle -= 1 * body_rotation;
+            angle -= 1 * bodyRotation;
         else if (rotateRight)
-            angle += 1 * body_rotation;
+            angle += 1 * bodyRotation;
         manipulator.updateTurretXY();
         turret.move(time);
         if (!ammo.getFire()) {

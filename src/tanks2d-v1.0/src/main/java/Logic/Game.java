@@ -2,7 +2,7 @@ package Logic;
 
 
 import Engine.GameSaver;
-import Engine.ImageManager;
+import Resources.ImageManager;
 import Engine.ScreenManager;
 import Engine.Sound;
 
@@ -26,14 +26,20 @@ public class Game implements Runnable, KeyListener, MouseListener {
     private String start_resume = "Start";
     private String save_last = "Last save";
     public int level = 1;
-    private ArrayList<Integer> preessedKey;
+    private ArrayList<Integer> pressedKey;
 
     public void setPlayer(Player player){this.player = player;}
 
-    private static final DisplayMode modes[] = {
+    private static final DisplayMode[] modes = {
             new DisplayMode(1920,1080,32,0),
             new DisplayMode(1920,1080,24,0),
             new DisplayMode(1920,1080,16,0),
+            new DisplayMode(1680,1050,32,0),
+            new DisplayMode(1680,1050,24,0),
+            new DisplayMode(1680,1050,16,0),
+            new DisplayMode(1280,1024,32,0),
+            new DisplayMode(1280,1024,24,0),
+            new DisplayMode(1280,1024,16,0),
             new DisplayMode(800,600,32,0),
             new DisplayMode(800,600,24,0),
             new DisplayMode(800,600,16,0),
@@ -56,7 +62,7 @@ public class Game implements Runnable, KeyListener, MouseListener {
     }
 
     private void init(){
-        preessedKey = new ArrayList<>();
+        pressedKey = new ArrayList<>();
         screenManager = new ScreenManager();
         DisplayMode dm = screenManager.findFirstCompatibleMode(modes);
         screenManager.setFullScreen(dm);
@@ -142,7 +148,7 @@ public class Game implements Runnable, KeyListener, MouseListener {
         GameSaver gs = (GameSaver) oin.readObject();
         gameMap = new GameMap(this, gs);
         playing = true;
-        preessedKey = new ArrayList<>();
+        pressedKey = new ArrayList<>();
     }
 
     private void saveGame() throws IOException {
@@ -168,7 +174,6 @@ public class Game implements Runnable, KeyListener, MouseListener {
 
                 Graphics2D g = screenManager.getGraphics();
                 draw(g);
-                player.updateInfo();
                 g.dispose();
             }
             else if(gameMap.isVictory){
@@ -198,31 +203,31 @@ public class Game implements Runnable, KeyListener, MouseListener {
     public void keyPressed(KeyEvent e) {
         if(playing) {
             int key = e.getKeyCode();
-            if(!preessedKey.contains(key)) preessedKey.add(key);
+            if(!pressedKey.contains(key)) pressedKey.add(key);
             if(key == KeyEvent.VK_ESCAPE) {
                 pause();
             }
-            else if(preessedKey.contains(KeyEvent.VK_P)) {
+            else if(pressedKey.contains(KeyEvent.VK_P)) {
                 try {
                     saveGame();
                 } catch (IOException e1) {
                     e1.printStackTrace();
                 }
             }
-            else if(preessedKey.contains(KeyEvent.VK_W)){
-                if(preessedKey.contains(KeyEvent.VK_D)) player.launcher.goRight();
-                else if(preessedKey.contains(KeyEvent.VK_A)) player.launcher.goLeft();
+            else if(pressedKey.contains(KeyEvent.VK_W)){
+                if(pressedKey.contains(KeyEvent.VK_D)) player.launcher.goRight();
+                else if(pressedKey.contains(KeyEvent.VK_A)) player.launcher.goLeft();
                 else player.launcher.goForward();
             }
-            else if(preessedKey.contains(KeyEvent.VK_S)){
-                if(preessedKey.contains(KeyEvent.VK_D)) player.launcher.backLeft();
-                else if(preessedKey.contains(KeyEvent.VK_A)) player.launcher.backRight();
+            else if(pressedKey.contains(KeyEvent.VK_S)){
+                if(pressedKey.contains(KeyEvent.VK_D)) player.launcher.backLeft();
+                else if(pressedKey.contains(KeyEvent.VK_A)) player.launcher.backRight();
                 else player.launcher.goBack();
             }
-            else if(preessedKey.contains(KeyEvent.VK_D)){
+            else if(pressedKey.contains(KeyEvent.VK_D)){
                 player.launcher.turnRight();
             }
-            else if(preessedKey.contains(KeyEvent.VK_A)){
+            else if(pressedKey.contains(KeyEvent.VK_A)){
                 player.launcher.turnLeft();
             }
             else{
@@ -235,24 +240,24 @@ public class Game implements Runnable, KeyListener, MouseListener {
         if(playing) {
             int keyCode = e.getKeyCode();
             int i;
-            if (preessedKey.contains(keyCode)) {
-                i = preessedKey.indexOf(keyCode);
-                preessedKey.remove(i);
+            if (pressedKey.contains(keyCode)) {
+                i = pressedKey.indexOf(keyCode);
+                pressedKey.remove(i);
             }
-            if(preessedKey.contains(KeyEvent.VK_W)){
-                if(preessedKey.contains(KeyEvent.VK_D)) player.launcher.goRight();
-                else if(preessedKey.contains(KeyEvent.VK_A)) player.launcher.goLeft();
+            if(pressedKey.contains(KeyEvent.VK_W)){
+                if(pressedKey.contains(KeyEvent.VK_D)) player.launcher.goRight();
+                else if(pressedKey.contains(KeyEvent.VK_A)) player.launcher.goLeft();
                 else player.launcher.goForward();
             }
-            else if(preessedKey.contains(KeyEvent.VK_S)){
-                if(preessedKey.contains(KeyEvent.VK_D)) player.launcher.backLeft();
-                else if(preessedKey.contains(KeyEvent.VK_A)) player.launcher.backRight();
+            else if(pressedKey.contains(KeyEvent.VK_S)){
+                if(pressedKey.contains(KeyEvent.VK_D)) player.launcher.backLeft();
+                else if(pressedKey.contains(KeyEvent.VK_A)) player.launcher.backRight();
                 else player.launcher.goBack();
             }
-            else if(preessedKey.contains(KeyEvent.VK_D)){
+            else if(pressedKey.contains(KeyEvent.VK_D)){
                 player.launcher.turnRight();
             }
-            else if(preessedKey.contains(KeyEvent.VK_A)){
+            else if(pressedKey.contains(KeyEvent.VK_A)){
                 player.launcher.turnLeft();
             }
             else{

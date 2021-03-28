@@ -1,6 +1,6 @@
 package Logic;
 
-import Engine.ImageManager;
+import Resources.ImageManager;
 
 import java.awt.*;
 import java.io.Serializable;
@@ -24,8 +24,8 @@ public class Background extends MapObject implements Serializable {
         this.currentBgXPosition = currentBgXPosition;
     }
 
-    public void setCurrentBgYPosition(int currentBgYPosision) {
-        this.currentBgYPosition = currentBgYPosision;
+    public void setCurrentBgYPosition(int currentBgYPosition) {
+        this.currentBgYPosition = currentBgYPosition;
     }
 
     @Override

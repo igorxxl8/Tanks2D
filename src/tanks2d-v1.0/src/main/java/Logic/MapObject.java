@@ -32,7 +32,7 @@ public abstract class MapObject implements Serializable {
 
     public double getWidth(){return image.getWidth(null)/2;}
 
-    double getHeigth() {
+    double getHeight() {
         return image.getHeight(null)/2;
     }
 
@@ -52,7 +52,7 @@ public abstract class MapObject implements Serializable {
     }
 
     public void draw(Graphics2D g){
-        g.drawImage(image,(int)(x-getWidth()),(int)(y-getHeigth()),null);
+        g.drawImage(image,(int)(x-getWidth()),(int)(y- getHeight()),null);
     }
 
     public double getHealth() {

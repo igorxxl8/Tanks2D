@@ -10,7 +10,7 @@ public abstract class TankManipulator implements Serializable {
     double turretX;
     double turretY;
 
-    void setTankRotator(){
+    void setTankLauncher(){
         launcher = new TankLauncher(new TurnRight(tank), new GoForward(tank),
                 new TurnLeft(tank), new GoBack(tank), new StopTank(tank), new GoLeft(tank),
                 new GoRight(tank), new BackLeft(tank), new BackRight(tank));

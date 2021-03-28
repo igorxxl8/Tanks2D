@@ -4,15 +4,8 @@ import java.io.Serializable;
 import java.util.LinkedList;
 
 class Graph implements Serializable {
-    int n;
-    int s;
     int SIZE = 145;
-    private LinkedList[] g;
-    private LinkedList<Integer> comp;
-
-    LinkedList getEdge(int index){
-        return g[index];
-    }
+    private LinkedList<Integer>[] g;
 
     public LinkedList<Integer> getPath(int from, int to){
         LinkedList<Integer> q = new LinkedList<>();
@@ -50,9 +43,8 @@ class Graph implements Serializable {
 
     Graph(){
         g = new LinkedList[SIZE];
-        comp = new LinkedList<>();
         for(int i = 0; i < SIZE; i++){
-            g[i] = new LinkedList<Integer>();
+            g[i] = new LinkedList<>();
         }
     }
 

@@ -3,11 +3,11 @@ package Logic;
 import Engine.Animation;
 import Engine.AnimationPlayer;
 import Engine.GameSaver;
-import Engine.ImageManager;
+import Resources.ImageManager;
 import Vehicles.IMoveable;
 import Vehicles.Tank;
 import Vehicles.TankTurret;
-import javafx.util.Pair;
+import Core.Pair;
 
 import java.awt.*;
 import java.io.*;
@@ -16,16 +16,16 @@ import java.util.List;
 import java.util.Scanner;
 
 public class GameMap implements Serializable {
-    private ArrayList<MapObject> mpObjects;
-    private ArrayList<Enemy> enemies;
-    private ArrayList<TankManipulator> manipulators;
-    private Graph graph;
-    private Background background;
-    private Player player;
-    private MapPanel mapPanel;
-    private Animation vustrel;
-    private Animation vzruv;
-    private Game owner;
+    private final ArrayList<MapObject> mpObjects = new ArrayList<>();
+    private final ArrayList<Enemy> enemies = new ArrayList<>();
+    private final ArrayList<TankManipulator> manipulators = new ArrayList<>();
+    private final Graph graph = new Graph();
+    private final Background background;
+    private final Player player;
+    private final MapPanel mapPanel;
+    private Animation fire;
+    private Animation explosion;
+    private final Game owner;
     boolean isVictory = false;
     boolean isLose = false;
 
@@ -35,12 +35,8 @@ public class GameMap implements Serializable {
 
     GameMap(Game owner) {
         this.owner = owner;
-        graph = new Graph();
-        mpObjects = new ArrayList<>();
-        manipulators = new ArrayList<>();
-        enemies = new ArrayList<>();
         player = owner.getPlayer();
-        background = new Background(1920 / 2, 1080 / 2, owner.level);
+        background = new Background(960, 540, owner.level);
         mpObjects.add(background);
         setBlocks(owner.level);
         setGraph(owner.level);
@@ -64,11 +60,7 @@ public class GameMap implements Serializable {
 
     GameMap(Game owner, GameSaver savedMap) {
         this.owner = owner;
-        graph = new Graph();
-        mpObjects = new ArrayList<>();
-        manipulators = new ArrayList<>();
-        enemies = new ArrayList<>();
-        background = new Background(1920 / 2, 1080 / 2, savedMap.getLevel());
+        background = new Background(960, 540, savedMap.getLevel());
         background.setCurrentBgXPosition(savedMap.getCurrentBgXPosition());
         background.setCurrentBgYPosition(savedMap.getCurrentBgYPosition());
         player = new Player((int) savedMap.getPlayerX(), (int) savedMap.getPlayerY(), savedMap.getLevel());
@@ -109,14 +101,14 @@ public class GameMap implements Serializable {
     }
 
     private void loadAnimation(){
-        vustrel = new Animation();
-        vzruv = new Animation();
-        vustrel.addScene(ImageManager.getImage_manager().getImage(100),40);
-        vustrel.addScene(ImageManager.getImage_manager().getImage(101),40);
-        vustrel.addScene(ImageManager.getImage_manager().getImage(102),40);
-        vzruv.addScene(ImageManager.getImage_manager().getImage(105), 120);
-        vzruv.addScene(ImageManager.getImage_manager().getImage(104), 120);
-        vzruv.addScene(ImageManager.getImage_manager().getImage(103), 120);
+        fire = new Animation();
+        explosion = new Animation();
+        fire.addScene(ImageManager.getImage_manager().getImage(100),40);
+        fire.addScene(ImageManager.getImage_manager().getImage(101),40);
+        fire.addScene(ImageManager.getImage_manager().getImage(102),40);
+        explosion.addScene(ImageManager.getImage_manager().getImage(105), 120);
+        explosion.addScene(ImageManager.getImage_manager().getImage(104), 120);
+        explosion.addScene(ImageManager.getImage_manager().getImage(103), 120);
     }
 
     private void addEnemies(int level) {
@@ -186,7 +178,10 @@ public class GameMap implements Serializable {
             for (String s : ar) {
                 try {
                     String[] temp = s.split("\t");
-                    mpObjects.add(new Block(new Integer(temp[0]), new Integer(temp[1]), new Integer(temp[2]), new Integer(temp[2])));
+                    mpObjects.add(new Block(Double.parseDouble(temp[0]),
+                                            Double.parseDouble(temp[1]),
+                                            Integer.parseInt(temp[2]),
+                                            Integer.parseInt(temp[2])));
                 } catch (Exception ignored) {
                 }
             }
@@ -211,7 +206,8 @@ public class GameMap implements Serializable {
             for (String s : ar) {
                 try {
                     String[] temp = s.split("\t");
-                    graph.addEdge(new Integer(temp[0]), new Integer(temp[1]));
+                    graph.addEdge(Integer.parseInt(temp[0]),
+                                  Integer.parseInt(temp[1]));
                 } catch (Exception ignored) {
                 }
             }
@@ -240,7 +236,7 @@ public class GameMap implements Serializable {
                             tank.setX(tankX + 18);
                         }
 
-                        if (tankY + tank.getWidth() >= mp.getY() - mp.getHeigth()
+                        if (tankY + tank.getWidth() >= mp.getY() - mp.getHeight()
                                 && tankY < mp.getY()
                                 && tankX <= mp.getX() + tank.image.getHeight(null)
                                 && tankX >= mp.getX() - tank.image.getHeight(null)
@@ -248,7 +244,7 @@ public class GameMap implements Serializable {
                             tank.setY(tankY - 18);
                         }
 
-                        if (tankY - tank.getWidth() <= mp.getY() + mp.getHeigth()
+                        if (tankY - tank.getWidth() <= mp.getY() + mp.getHeight()
                                 && tankY > mp.getY()
                                 && tankX <= mp.getX() + tank.image.getHeight(null)
                                 && tankX >= mp.getX() - tank.image.getHeight(null)
@@ -266,8 +262,8 @@ public class GameMap implements Serializable {
             Ammo ammo = manipulator.getTank().getAmmo();
             double ammoX = ammo.getX();
             double ammoY = ammo.getY();
-            int destrObjectIndex = -1;
-            int destrammoIndex = -1;
+            int destroyedObjectIndex = -1;
+            int destroyedAmmoIndex = -1;
             if (ammo.getFire()) {
                 for (MapObject mp : mpObjects) {
                     if (ammo != mp && !(mp instanceof Background) && manipulator.getTank() != mp) {
@@ -275,50 +271,50 @@ public class GameMap implements Serializable {
                                 && ammoX < mp.getX()
                                 && ammoY <= mp.getY() + mp.image.getHeight(null)
                                 && ammoY >= mp.getY() - mp.image.getHeight(null)) {
-                            destrammoIndex = mpObjects.indexOf(ammo);
-                            destrObjectIndex = mpObjects.indexOf(mp);
+                            destroyedAmmoIndex = mpObjects.indexOf(ammo);
+                            destroyedObjectIndex = mpObjects.indexOf(mp);
                             mp.setHealth(mp.getHealth() - ammo.getDamage());
 
                         } else if (ammoX <= mp.getX() + mp.getWidth()
                                 && ammoX > mp.getX()
                                 && ammoY <= mp.getY() + mp.image.getHeight(null)
                                 && ammoY >= mp.getY() - mp.image.getHeight(null)) {
-                            destrammoIndex = mpObjects.indexOf(ammo);
-                            destrObjectIndex = mpObjects.indexOf(mp);
+                            destroyedAmmoIndex = mpObjects.indexOf(ammo);
+                            destroyedObjectIndex = mpObjects.indexOf(mp);
                             mp.setHealth(mp.getHealth() - ammo.getDamage());
-                        } else if (ammoY >= mp.getY() - mp.getHeigth()
+                        } else if (ammoY >= mp.getY() - mp.getHeight()
                                 && ammoY < mp.getY()
                                 && ammoX <= mp.getX() + mp.image.getHeight(null)
                                 && ammoX >= mp.getX() - mp.image.getHeight(null)
                                 ) {
-                            destrammoIndex = mpObjects.indexOf(ammo);
-                            destrObjectIndex = mpObjects.indexOf(mp);
+                            destroyedAmmoIndex = mpObjects.indexOf(ammo);
+                            destroyedObjectIndex = mpObjects.indexOf(mp);
                             mp.setHealth(mp.getHealth() - ammo.getDamage());
-                        } else if (ammoY <= mp.getY() + mp.getHeigth()
+                        } else if (ammoY <= mp.getY() + mp.getHeight()
                                 && ammoY > mp.getY()
                                 && ammoX <= mp.getX() + mp.image.getHeight(null)
                                 && ammoX >= mp.getX() - mp.image.getHeight(null)
                                 ) {
-                            destrammoIndex = mpObjects.indexOf(ammo);
-                            destrObjectIndex = mpObjects.indexOf(mp);
+                            destroyedAmmoIndex = mpObjects.indexOf(ammo);
+                            destroyedObjectIndex = mpObjects.indexOf(mp);
                             mp.setHealth(mp.getHealth() - ammo.getDamage());
                         }
-                        if (destrammoIndex != -1) {
-                            mpObjects.remove(destrammoIndex);
+                        if (destroyedAmmoIndex != -1) {
+                            mpObjects.remove(destroyedAmmoIndex);
                             ammo.setFire(false);
-                            mpObjects.add(destrammoIndex, ammo);
+                            mpObjects.add(destroyedAmmoIndex, ammo);
                         }
-                        if (destrObjectIndex != -1) {
-                            if(mpObjects.get(destrObjectIndex).getHealth() <= 0) {
+                        if (destroyedObjectIndex != -1) {
+                            if(mpObjects.get(destroyedObjectIndex).getHealth() <= 0) {
                                 drawAll(owner.screenManager.getGraphics());
-                                Thread t = new Thread(new AnimationPlayer(vzruv, owner.screenManager, mpObjects.get(destrObjectIndex).getX(), mpObjects.get(destrObjectIndex).getY(), 0, 361));
+                                Thread t = new Thread(new AnimationPlayer(explosion, owner.screenManager, mpObjects.get(destroyedObjectIndex).getX(), mpObjects.get(destroyedObjectIndex).getY(), 0, 361));
                                 t.start();
-                                int id = mpObjects.get(destrObjectIndex).id;
+                                int id = mpObjects.get(destroyedObjectIndex).id;
                                 if(id == -7)
                                     isVictory = true;
                                 if(id == 200)
                                     isLose = true;
-                                MapObject ob = mpObjects.get(destrObjectIndex);
+                                MapObject ob = mpObjects.get(destroyedObjectIndex);
                                 if (ob instanceof Tank){
                                     if(!ob.getIsPlayer()) {
                                         int index = 0;
@@ -332,7 +328,7 @@ public class GameMap implements Serializable {
                                         enemies.remove(index);
                                     }
                                 }
-                                mpObjects.remove(destrObjectIndex);
+                                mpObjects.remove(destroyedObjectIndex);
                             }
                             break;
                         }
@@ -404,11 +400,11 @@ public class GameMap implements Serializable {
         }
         for(TankManipulator tm : manipulators){
             Ammo am = tm.getTank().getAmmo();
-            int destrammo = mpObjects.indexOf(am);
+            int destroyedAmmo = mpObjects.indexOf(am);
             if(am.getX() - currentBgXPosition < 0 || am.getY() - currentBgYPosition < 0 || am.getX() + currentBgXPosition > X*4 || am.getY() > Y*7){
-                mpObjects.remove(destrammo);
+                mpObjects.remove(destroyedAmmo);
                 am.setFire(false);
-                mpObjects.add(destrammo, am);
+                mpObjects.add(destroyedAmmo, am);
             }
         }
     }
@@ -430,9 +426,9 @@ public class GameMap implements Serializable {
         drawMiniMap(g);
         g.setFont(new Font("Tahoma", Font.PLAIN, 20));
         g.setColor(new Color(255, 255,255));
-        Double reloading = (double)((int)(player.getTank().getAmmo().getTempReloading() / 7.07))/100;
+        double reloading = (double)((int)(player.getTank().getAmmo().getTempReloading() / 7.07))/100;
         g.drawString("Ammo:", 310,30);
-        if(!player.getTank().getAmmo().isCanFire()) g.drawString(reloading.toString(),400,30);
+        if(!player.getTank().getAmmo().isCanFire()) g.drawString(Double.toString(reloading),400,30);
         else g.drawString("Ready", 400,30);
         g.drawString("HP:", 310,50);
         g.drawString(Double.toString(player.getTank().getHealth()), 400, 50);
@@ -442,7 +438,7 @@ public class GameMap implements Serializable {
             if(rel - tr < 30 && rel - tr > 10)
             {
                 TankTurret tur = tm.getTank().getTurret();
-                Thread t = new Thread(new AnimationPlayer(vustrel, owner.screenManager, tur.getGunX(), tur.getGunY(), tur.getAngle(), 121));
+                Thread t = new Thread(new AnimationPlayer(fire, owner.screenManager, tur.getGunX(), tur.getGunY(), tur.getAngle(), 121));
                 t.start();
             }
         }

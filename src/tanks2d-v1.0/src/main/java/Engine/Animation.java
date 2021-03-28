@@ -4,14 +4,14 @@ import java.awt.Image;
 import java.util.ArrayList;
 
 public class Animation {
-    private ArrayList scenes;
+    private final ArrayList<OneScene> scenes;
     private int sceneIndex;
     private long movieTime;
     private long totalTime;
 
     // constructor
     public Animation() {
-        scenes = new ArrayList();
+        scenes = new ArrayList<>();
         totalTime = 0;
         start();
     }
@@ -58,7 +58,7 @@ public class Animation {
     }
 
     ////////////// PRIVATE INNER CLASS //////////////
-    private class OneScene {
+    private static class OneScene {
         Image pic;
         long endTime;
 

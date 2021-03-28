@@ -1,7 +1,5 @@
 package Vehicles;
 
-import Engine.ImageManager;
-import Logic.Ammo;
 import Logic.MapObject;
 
 import java.awt.*;
@@ -9,7 +7,7 @@ import java.awt.geom.AffineTransform;
 
 public class TankTurret extends MapObject implements IMoveable {
 
-    private Tank owner;
+    private final Tank owner;
     private double angle;
 
     TankTurret(double x, double y, Image image, Tank owner) {
@@ -48,8 +46,8 @@ public class TankTurret extends MapObject implements IMoveable {
             angle =-Math.atan((ptY - mY) / (mX - ptX)) - Math.toRadians(180);
         }
         if(owner.rotateLeft)
-            owner.angle -= 1 * owner.body_rotation;
+            owner.angle -= 1 * owner.bodyRotation;
         else if(owner.rotateRight)
-            owner.angle += 1 * owner.body_rotation;
+            owner.angle += 1 * owner.bodyRotation;
     }
 }

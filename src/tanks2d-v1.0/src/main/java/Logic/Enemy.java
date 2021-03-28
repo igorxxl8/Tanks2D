@@ -7,13 +7,13 @@ import java.io.Serializable;
 import java.util.LinkedList;
 
 public class Enemy extends TankManipulator implements Serializable {
-    private Graph graph;
-    private Player player;
+    private final Graph graph;
+    private final Player player;
     private int position;
-    private int level;
-    private Background bg;
+    private final int level;
+    private final Background bg;
     private LinkedList<Integer> path;
-    private EnemyStrategy strategy;
+    private final EnemyStrategy strategy;
 
     public int getLevel() {
         return level;
@@ -24,11 +24,8 @@ public class Enemy extends TankManipulator implements Serializable {
     Enemy(int x, int y, int position, int level, Graph graph, Player player, Background bg){
         this.level = level;
         switch (level) {
-            case 1:
-                tank = new PzKpwIVH(x, y, this);
-                break;
-            case 2:
-                tank = new PzKpwVIHTiger(x, y, this);
+            case 1 -> tank = new PzKpwIVH(x, y, this);
+            case 2 -> tank = new PzKpwVIHTiger(x, y, this);
         }
         this.graph = graph;
         this.player = player;
@@ -38,18 +35,15 @@ public class Enemy extends TankManipulator implements Serializable {
         this.bg = bg;
         strategy = new EnemyStrategy();
         path = strategy.executeStrategy(graph, position);
-        setTankRotator();
+        setTankLauncher();
     }
 
     Enemy(int position, int level, Graph graph, Player player, Background bg) {
         int x = 250 + (position % 12 - 1) * 600, y = 250 + (position / 12) * 600;
         this.level = level;
         switch (level) {
-            case 1:
-                tank = new PzKpwIVH(x, y, this);
-                break;
-            case 2:
-                tank = new PzKpwVIHTiger(x, y, this);
+            case 1 -> tank = new PzKpwIVH(x, y, this);
+            case 2 -> tank = new PzKpwVIHTiger(x, y, this);
         }
         this.graph = graph;
         this.player = player;
@@ -59,7 +53,7 @@ public class Enemy extends TankManipulator implements Serializable {
         this.bg = bg;
         strategy = new EnemyStrategy();
         path = strategy.executeStrategy(graph, position);
-        setTankRotator();
+        setTankLauncher();
     }
 
     private void checkAndChangeStrategy(){
@@ -95,9 +89,10 @@ public class Enemy extends TankManipulator implements Serializable {
                 return 180;
             else if (tX < x) return 0;
         } else {
+            final var v = Math.toDegrees(Math.atan((tX - x) / (tY - y)));
             if (tY < y) {
-                return (90 - (Math.toDegrees(Math.atan((tX - x) / (tY - y)))));
-            } else return (270 - (Math.toDegrees(Math.atan((tX - x) / (tY - y)))));
+                return (90 - v);
+            } else return (270 - v);
         }
         return 0;
     }

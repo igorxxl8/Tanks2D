@@ -8,24 +8,16 @@ import java.io.Serializable;
 public class Player extends TankManipulator implements Serializable {
     Player(int x, int y, int lvl) {
         switch (lvl) {
-            case 2:
-                tank = new A20(x, y, this);
-                break;
-            case 1:
-                tank = new T34_85(x, y, this);
-                break;
+            case 2 -> tank = new A20(x, y, this);
+            case 1 -> tank = new T34_85(x, y, this);
         }
         tank.setIsPlayer(true);
         tank.setId(200);
-        setTankRotator();
+        setTankLauncher();
     }
 
     void fire(){
         tank.fire();
-    }
-
-    void updateInfo(){
-        double playerHealth = tank.getHealth();
     }
 
     @Override
@@ -34,7 +26,7 @@ public class Player extends TankManipulator implements Serializable {
 
     @Override
     public void updateTurretXY(){
-        Point point = MouseInfo.getPointerInfo().getLocation();
+        var point = MouseInfo.getPointerInfo().getLocation();
         turretX = point.x;
         turretY = point.y;
     }

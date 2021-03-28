@@ -1,6 +1,6 @@
 package Logic;
 
-import Engine.ImageManager;
+import Resources.ImageManager;
 
 import java.io.Serializable;
 
